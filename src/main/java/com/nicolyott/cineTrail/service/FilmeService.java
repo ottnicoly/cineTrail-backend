@@ -62,7 +62,8 @@ public class FilmeService {
                 (String) result.get("overview"),
                 String.valueOf(result.get("popularity")),
                 (String) result.get("poster_path"),
-                (String) result.get("release_date")
+                (String) result.get("release_date"),
+                (Integer) result.get("id")
         )).collect(Collectors.toList());
 
         return movieDTOList;

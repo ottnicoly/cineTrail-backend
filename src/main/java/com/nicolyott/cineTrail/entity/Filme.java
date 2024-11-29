@@ -20,6 +20,8 @@ public class Filme {
     private String duracao;
     private String sinopse;
     private String poster;
+    private Integer idTmdb;
+
     @ManyToOne
     private Favorito favorito;
 
@@ -29,6 +31,7 @@ public class Filme {
         this.popularidade = filmeDTO.popularidade();
         this.sinopse = filmeDTO.sinopse();
         this.poster = filmeDTO.poster();
+        this.idTmdb = filmeDTO.idTmdb();
     }
 
 }
