@@ -1,14 +1,13 @@
 package com.nicolyott.cineTrail.controller;
 
-import com.nicolyott.cineTrail.service.SerieService;
+import com.nicolyott.cineTrail.service.HistoricoPesquisaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class SerieController {
+public class HistoricoPesquisaController {
 
     @Autowired
-    private SerieService service;
-
+    private HistoricoPesquisaService service;
 
 }

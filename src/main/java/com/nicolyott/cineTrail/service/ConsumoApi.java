@@ -34,5 +34,4 @@ public class ConsumoApi {
     //TOKEN = eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzNmZlYzI4ODIwNDJkODU0ZWMwN2FlNGZkNTEwYTE5YyIsIm5iZiI6MTczMjgxMDM5MS45ODkxOTQ0LCJzdWIiOiI2NzQ4OTVjZTJlZDM5YTNhZjE3MWU3MjgiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.hOyrT-GcTKdK2dGcUGye_ybbLePPc3PlJd7iWIk0dkw
     //CHAVE = 36fec2882042d854ec07ae4fd510a19c
     //URL = https://api.themoviedb.org/3/movie/11?api_key=
-
 }
