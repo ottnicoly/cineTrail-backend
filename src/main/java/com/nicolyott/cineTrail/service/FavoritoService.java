@@ -23,6 +23,9 @@ public class FavoritoService {
     RestTemplate restTemplate = new RestTemplate();
 
     public List<Favorito> obterFavoritos(){
+
+
+
         return null;
     }
 
