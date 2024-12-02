@@ -7,12 +7,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Entity
-@Table(name = "filmes")
 public class Filme {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titulo;
     private String dataLancamento;
@@ -21,9 +17,6 @@ public class Filme {
     private String sinopse;
     private String poster;
     private Integer idTmdb;
-
-    @ManyToOne
-    private Favorito favorito;
 
     public Filme(FilmeDTO filmeDTO) {
         this.titulo = filmeDTO.titulo();

@@ -18,8 +18,8 @@ public class FilmeController {
     private FilmeService service;
 
     @GetMapping("{movie}")
-    public List<FilmeDTO> pesquisaFilme(@PathVariable("movie") String movie) {
-        return service.pesquisaFilme(movie);
+    public List<FilmeDTO> pesquisaFilmeNome(@PathVariable("movie") String movie) {
+        return service.pesquisaFilmeNome(movie);
     }
 
     @GetMapping("/em-alta")
@@ -28,8 +28,8 @@ public class FilmeController {
     }
 
     @GetMapping("/retorna-filme/{id}")
-    public FilmeDTO obterFilme(@PathVariable("id") Long id) {
-        return service.obterFilme(id);
+    public FilmeDTO obterFilmeId(@PathVariable("id") Long id) {
+        return service.pesquisarFilmeId(id);
     }
 
 }

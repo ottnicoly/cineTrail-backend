@@ -16,9 +16,11 @@ import java.util.List;
 public class Favorito {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany
-    private List<Filme> filmesFavoritos;
+    private Integer idTmdb;
+    private String titulo;
+    private String dataFavorito;
+
 
 }

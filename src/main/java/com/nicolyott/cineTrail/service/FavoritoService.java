@@ -5,9 +5,11 @@ import com.nicolyott.cineTrail.entity.Favorito;
 import com.nicolyott.cineTrail.entity.Filme;
 import com.nicolyott.cineTrail.repository.FavoritoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -18,19 +20,18 @@ public class FavoritoService {
     @Autowired
     private FilmeService service;
 
-    private final String TMDB_API_KEY = "?api_key=36fec2882042d854ec07ae4fd510a19c";
-    private final String TMDB_BASE_URL = "https://api.themoviedb.org/3/";
-    RestTemplate restTemplate = new RestTemplate();
-
     public List<Favorito> obterFavoritos(){
-
-
-
-        return null;
+        return repository.findAll();
     }
 
-    public void adicionarAosFavoritos(Long id){
+    public void adicionarAosFavoritos(Long filmeId){
+       FilmeDTO filmeDTO = service.pesquisarFilmeId(filmeId);
+       Favorito favorito = new Favorito();
+       favorito.setTitulo(filmeDTO.titulo());
+       favorito.setIdTmdb(filmeDTO.idTmdb());
+       favorito.setDataFavorito(LocalDateTime.now().toString());
 
+       repository.save(favorito);
     }
 
 }

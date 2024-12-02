@@ -1,8 +1,8 @@
 package com.nicolyott.cineTrail.Principal;
 
 import com.nicolyott.cineTrail.dto.FilmeDTO;
-import com.nicolyott.cineTrail.service.ConsumoApi;
-import com.nicolyott.cineTrail.service.ConverteDados;
+import com.nicolyott.cineTrail.service.Api.ConsumoApi;
+import com.nicolyott.cineTrail.service.Api.ConverteDados;
 
 public class Principal {
 

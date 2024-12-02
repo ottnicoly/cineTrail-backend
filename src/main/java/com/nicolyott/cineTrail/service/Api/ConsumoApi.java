@@ -1,14 +1,9 @@
-package com.nicolyott.cineTrail.service;
+package com.nicolyott.cineTrail.service.Api;
 
 import javax.net.ssl.*;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.security.cert.X509Certificate;
 
 public class ConsumoApi {
