@@ -2,12 +2,15 @@ package com.nicolyott.cineTrail.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Data
 @NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "historicoPesquisas")
 public class HistoricoPesquisa {

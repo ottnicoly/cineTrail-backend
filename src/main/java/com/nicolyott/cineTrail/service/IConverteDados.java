@@ -1,4 +1,4 @@
-package com.nicolyott.cineTrail.service.Api;
+package com.nicolyott.cineTrail.service;
 
 public interface IConverteDados {
 

@@ -1,15 +1,14 @@
 package com.nicolyott.cineTrail.service;
 
 import com.nicolyott.cineTrail.dto.FilmeDTO;
+import com.nicolyott.cineTrail.entity.CategoriaFavorito;
 import com.nicolyott.cineTrail.entity.Favorito;
-import com.nicolyott.cineTrail.entity.Filme;
+import com.nicolyott.cineTrail.exception.CategoriaInvalidoException;
 import com.nicolyott.cineTrail.repository.FavoritoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -24,14 +23,34 @@ public class FavoritoService {
         return repository.findAll();
     }
 
-    public void adicionarAosFavoritos(Long filmeId){
-       FilmeDTO filmeDTO = service.pesquisarFilmeId(filmeId);
-       Favorito favorito = new Favorito();
-       favorito.setTitulo(filmeDTO.titulo());
-       favorito.setIdTmdb(filmeDTO.idTmdb());
-       favorito.setDataFavorito(LocalDateTime.now().toString());
-
+    public void adicionarAosFavoritos(Integer filmeId, CategoriaFavorito categoria){
+       FilmeDTO filmeDTO = service.buscarFilmeId(filmeId);
+       Favorito favorito = new Favorito(filmeDTO, categoria);
        repository.save(favorito);
+    }
+
+    public void deletarFavorito(Integer idTmdb){
+        // verificar se favorito existe
+        Favorito favorito = repository.findByIdTmdb(idTmdb);
+        repository.delete(favorito);
+    }
+
+    public List<Favorito> buscarPorCategoria(@RequestParam String categoriaFavorito){
+        try {
+            CategoriaFavorito categoria = CategoriaFavorito.valueOf(categoriaFavorito.toUpperCase());
+            return repository.findByCategoriaFavorito(categoria);
+        } catch (IllegalArgumentException e) {
+            throw new CategoriaInvalidoException("Categoria inválida: " + categoriaFavorito);
+        }
+    }
+
+    public boolean validarCategoria(CategoriaFavorito categoriaFavorito){
+        for(CategoriaFavorito categoria : CategoriaFavorito.values()) {
+            if (categoriaFavorito.equals(categoria)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

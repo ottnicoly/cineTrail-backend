@@ -1,14 +1,18 @@
 package com.nicolyott.cineTrail.service;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nicolyott.cineTrail.dto.FilmeDTO;
-import com.nicolyott.cineTrail.entity.HistoricoPesquisa;
-import com.nicolyott.cineTrail.repository.HistoricoPesquisaRepository;
+import com.nicolyott.cineTrail.exception.FilmeNotFoundException;
+import com.nicolyott.cineTrail.exception.IdInvalidoException;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,50 +21,64 @@ import java.util.stream.Collectors;
 public class FilmeService {
 
     @Autowired
-    private HistoricoPesquisaRepository pesquisaRepository;
+    private HistoricoPesquisaService historicoService;
 
     private final String TMDB_API_KEY = "?api_key=36fec2882042d854ec07ae4fd510a19c";
     private final String TMDB_BASE_URL = "https://api.themoviedb.org/3/";
-    RestTemplate restTemplate = new RestTemplate();
 
-    public List<FilmeDTO> pesquisaFilmeNome(String filme) {
-        String url = TMDB_BASE_URL + "search/movie" + TMDB_API_KEY + "&query=" + filme;
-        List<FilmeDTO> filmeDTOList = obterLista(url);
+    ConsumoApi consumoApi = new ConsumoApi();
+    ConverteDados converteDados = new ConverteDados();
 
-        HistoricoPesquisa historicoPesquisa = new HistoricoPesquisa(filme);
-        pesquisaRepository.save(historicoPesquisa);
+    //validar quando a requisição n é colocada nenhum valor e da erro
+
+    public List<FilmeDTO> buscarFilmeNome(String filme) {
+        //validar quando é colocado um nome não existente e a api retorna uma lista vazia no lugar do erro.
+        String json = consumoApi.obterDados(TMDB_BASE_URL + "search/movie" + TMDB_API_KEY + "&query=" + filme.replaceAll(" ", "+"));
+        List<FilmeDTO> filmeDTOList = obterLista(json);
+        historicoService.adicionarHistorico(filme);
 
         return filmeDTOList;
     }
 
     public List<FilmeDTO> obterFilmesEmAlta() {
-        String url = TMDB_BASE_URL + "movie/popular" + TMDB_API_KEY;
-        List<FilmeDTO> filmeDTOList = obterLista(url);
+        String json = consumoApi.obterDados(TMDB_BASE_URL + "movie/popular" + TMDB_API_KEY);
+        List<FilmeDTO> filmeDTOList = obterLista(json);
 
         return filmeDTOList;
     }
 
-    public FilmeDTO pesquisarFilmeId(Long id){
-        String url = TMDB_BASE_URL + "movie/" + id + TMDB_API_KEY;
+    public FilmeDTO buscarFilmeId(Integer idTmdb){
+        if(!verificarId(idTmdb)){
+            throw new IdInvalidoException("id invalido");
+        }
 
-        ResponseEntity<FilmeDTO> resp = restTemplate.getForEntity(url, FilmeDTO.class);
+        String json = consumoApi.obterDados(TMDB_BASE_URL + "movie/" + idTmdb + TMDB_API_KEY);
+        FilmeDTO filmeDTO = converteDados.converteDados(json, FilmeDTO.class);
 
-        return resp.getBody();
+        return filmeDTO;
     }
 
-    public List<FilmeDTO> obterLista(String url) {
-        ResponseEntity<Map> resp = restTemplate
-                        .getForEntity((url), Map.class);
-        List<Map<String, Object>> results = (List<Map<String, Object>>) resp.getBody().get("results");
+    public boolean verificarId(Integer idTmdb) {
+        String url = TMDB_BASE_URL + "movie/" + idTmdb + TMDB_API_KEY;
+        int responseCode = consumoApi.verificarRequisição(url, "HEAD");
 
-        List<FilmeDTO> filmeDTOList = results.stream().map(result -> new FilmeDTO(
-                (String) result.get("original_title"),
-                (String) result.get("overview"),
-                String.valueOf(result.get("popularity")),
-                (String) result.get("poster_path"),
-                (String) result.get("release_date"),
-                (Integer) result.get("id")
-        )).collect(Collectors.toList());
+        return responseCode >= 200 && responseCode < 300;
+    }
+
+    public List<FilmeDTO> obterLista(String json) {
+        Map<String, Object> resp = converteDados.converteDados(json, Map.class);
+        List<Map<String, Object>> results = (List<Map<String, Object>>) resp.get("results");
+
+        List<FilmeDTO> filmeDTOList = results.stream()
+                .map(result -> {
+                    try {
+                        return converteDados
+                                .converteDados(new ObjectMapper().writeValueAsString(result), FilmeDTO.class);
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
 
         return filmeDTOList;
     }

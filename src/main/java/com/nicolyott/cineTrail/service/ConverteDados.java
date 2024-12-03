@@ -1,4 +1,4 @@
-package com.nicolyott.cineTrail.service.Api;
+package com.nicolyott.cineTrail.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
