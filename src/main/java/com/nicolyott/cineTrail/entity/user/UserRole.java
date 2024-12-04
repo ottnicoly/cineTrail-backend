@@ -1,4 +1,4 @@
-package com.nicolyott.cineTrail.entity.usuario;
+package com.nicolyott.cineTrail.entity.user;
 
 public enum UserRole {
     ADMIN("admin"),

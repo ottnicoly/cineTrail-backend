@@ -1,11 +1,11 @@
 package com.nicolyott.cineTrail.repository;
 
-import com.nicolyott.cineTrail.entity.usuario.Usuario;
+import com.nicolyott.cineTrail.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    UserDetails findByUser(String user);
+    UserDetails findByLogin(String login);
 
 }

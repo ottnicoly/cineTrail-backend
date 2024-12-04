@@ -1,9 +1,6 @@
-package com.nicolyott.cineTrail.entity.usuario;
+package com.nicolyott.cineTrail.entity.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,17 +17,24 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Usuario implements UserDetails {
+@Table(name = "users")
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String user;
+    private String login;
 
-    private String senha;
+    private String password;
 
     private UserRole role;
+
+    public User(String login, String password, UserRole role){
+        this.login = login;
+        this.password = password;
+        this.role = role;
+    }
 
 
     @Override
@@ -41,12 +45,12 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getPassword() {
-        return senha;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return user;
+        return login;
     }
 
     @Override
