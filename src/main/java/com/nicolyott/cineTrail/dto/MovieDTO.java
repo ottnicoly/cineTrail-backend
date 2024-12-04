@@ -1,14 +1,15 @@
 package com.nicolyott.cineTrail.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record FilmeDTO(
-        @JsonAlias("original_title") String titulo,
-        @JsonAlias("overview") String sinopse,
-        @JsonAlias("popularity") String popularidade,
+public record MovieDTO(
+        @JsonAlias("original_title") String name,
+        @JsonAlias("overview") String overview,
+        @JsonAlias("popularity") String popularity,
         @JsonAlias("poster_path") String poster,
-        @JsonAlias("release_date") String dataLancamento,
+        @JsonAlias("release_date") String releaseDate,
         @JsonAlias("id") Integer idTmdb
 ) {}
