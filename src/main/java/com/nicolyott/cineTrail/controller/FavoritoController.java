@@ -1,7 +1,7 @@
 package com.nicolyott.cineTrail.controller;
 
-import com.nicolyott.cineTrail.entity.CategoriaFavorito;
-import com.nicolyott.cineTrail.entity.Favorito;
+import com.nicolyott.cineTrail.entity.favorito.CategoriaFavorito;
+import com.nicolyott.cineTrail.entity.favorito.Favorito;
 import com.nicolyott.cineTrail.service.FavoritoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

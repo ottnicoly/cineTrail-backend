@@ -1,8 +1,8 @@
 package com.nicolyott.cineTrail.service;
 
 import com.nicolyott.cineTrail.dto.FilmeDTO;
-import com.nicolyott.cineTrail.entity.CategoriaFavorito;
-import com.nicolyott.cineTrail.entity.Favorito;
+import com.nicolyott.cineTrail.entity.favorito.CategoriaFavorito;
+import com.nicolyott.cineTrail.entity.favorito.Favorito;
 import com.nicolyott.cineTrail.exception.CategoriaInvalidoException;
 import com.nicolyott.cineTrail.repository.FavoritoRepository;
 import org.springframework.beans.factory.annotation.Autowired;

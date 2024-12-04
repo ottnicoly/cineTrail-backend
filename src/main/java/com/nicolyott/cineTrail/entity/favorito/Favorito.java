@@ -1,8 +1,7 @@
-package com.nicolyott.cineTrail.entity;
+package com.nicolyott.cineTrail.entity.favorito;
 
 import com.nicolyott.cineTrail.dto.FilmeDTO;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

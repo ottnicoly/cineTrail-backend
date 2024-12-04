@@ -1,4 +1,4 @@
-package com.nicolyott.cineTrail.entity;
+package com.nicolyott.cineTrail.entity.favorito;
 
 public enum CategoriaFavorito {
     JA_ASSISTIDOS("Ja assistido"),
