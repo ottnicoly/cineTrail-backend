@@ -1,7 +1,7 @@
 package com.nicolyott.cineTrail.repository;
 
-import com.nicolyott.cineTrail.entity.favoriteMovie.FavoriteMovieCategory;
 import com.nicolyott.cineTrail.entity.favoriteMovie.FavoriteMovie;
+import com.nicolyott.cineTrail.entity.favoriteMovie.FavoriteMovieCategory;
 import com.nicolyott.cineTrail.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

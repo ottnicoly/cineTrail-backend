@@ -5,10 +5,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nicolyott.cineTrail.config.MovieConfig;
 import com.nicolyott.cineTrail.dto.MovieDTO;
-import com.nicolyott.cineTrail.exception.InvalidMovieIdException;
-import com.nicolyott.cineTrail.exception.MovieNotFoundException;
+import com.nicolyott.cineTrail.exception.movie.InvalidMovieIdException;
+import com.nicolyott.cineTrail.exception.movie.MovieNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,26 +27,24 @@ public class MovieService {
         String json = apiService
                 .dataFetcher(movieConfig.getTMDB_BASE_URL() + "search/movie" + movieConfig.getTMDB_API_KEY() + "&query=" + movie.replaceAll(" ", "+"));
         List<MovieDTO> movieDTOList = getMovieList(json);
-
+        emptyMovies(movieDTOList);
         return movieDTOList;
     }
 
     public List<MovieDTO> getTrendingMovies() {
         String json = apiService.dataFetcher(movieConfig.getTMDB_BASE_URL() + "movie/popular" + movieConfig.getTMDB_API_KEY());
         List<MovieDTO> movieDTOList = getMovieList(json);
-
+        emptyMovies(movieDTOList);
         return movieDTOList;
     }
 
-    public MovieDTO getMovieById(Integer idTmdb){
-        if (idTmdb <= 0) {
-            throw new InvalidMovieIdException("ID de filme inválido: " + idTmdb);
+    public MovieDTO getMovieById(Integer idTmdb) {
+        if(!verificarId(idTmdb)){
+            throw new InvalidMovieIdException();
         }
+
         String json = apiService.dataFetcher(movieConfig.getTMDB_BASE_URL() + "movie/" + idTmdb + movieConfig.getTMDB_API_KEY());
         MovieDTO movieDTO = dataConverter.convertData(json, MovieDTO.class);
-        if (movieDTO == null) {
-            throw new MovieNotFoundException("Filme com ID " + idTmdb + " não encontrado");
-        }
         return movieDTO;
     }
 
@@ -69,4 +66,15 @@ public class MovieService {
         return movieDTOList;
     }
 
+    public void emptyMovies(List<MovieDTO> movieDTOList) {
+        if (movieDTOList.isEmpty()) {
+            throw new MovieNotFoundException();
+        }
+    }
+
+    public boolean verificarId(Integer idTmdb) {
+        String url = movieConfig.getTMDB_BASE_URL() + "movie/" + idTmdb + movieConfig.getTMDB_API_KEY();
+        int statucCode = apiService.verificarRequisição(url, "GET");
+        return statucCode == 200;
+    }
 }

@@ -22,6 +22,8 @@ public class FavoriteMovie {
 
     private Integer idTmdb;
     private String title;
+
+    @Column(length = 1024)
     private String overview;
     private LocalDateTime favoriteDate;
 
