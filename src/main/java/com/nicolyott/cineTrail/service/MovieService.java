@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nicolyott.cineTrail.config.MovieConfig;
 import com.nicolyott.cineTrail.dto.MovieDTO;
+import com.nicolyott.cineTrail.exception.InvalidMovieIdException;
+import com.nicolyott.cineTrail.exception.MovieNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,9 +40,14 @@ public class MovieService {
     }
 
     public MovieDTO getMovieById(Integer idTmdb){
+        if (idTmdb <= 0) {
+            throw new InvalidMovieIdException("ID de filme inválido: " + idTmdb);
+        }
         String json = apiService.dataFetcher(movieConfig.getTMDB_BASE_URL() + "movie/" + idTmdb + movieConfig.getTMDB_API_KEY());
         MovieDTO movieDTO = dataConverter.convertData(json, MovieDTO.class);
-
+        if (movieDTO == null) {
+            throw new MovieNotFoundException("Filme com ID " + idTmdb + " não encontrado");
+        }
         return movieDTO;
     }
 
