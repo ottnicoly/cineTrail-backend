@@ -20,8 +20,11 @@ public class MovieService {
     @Autowired
     MovieConfig movieConfig;
 
-    ApiService apiService = new ApiService();
-    DataConverter dataConverter = new DataConverter();
+    @Autowired
+    ApiService apiService;
+
+    @Autowired
+    DataConverter dataConverter;
 
     public List<MovieDTO> getMovieByName(String movie) {
         String json = apiService

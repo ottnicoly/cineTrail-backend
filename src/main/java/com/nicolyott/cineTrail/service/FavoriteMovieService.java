@@ -34,8 +34,11 @@ public class FavoriteMovieService {
 
     public void addFavoriteMovie(Integer movieId, String category) {
         FavoriteMovieCategory enumCategory = isCategoryValid(category);
-        existsFavoritMovie(movieId);
+        FavoriteMovie existsFavoriteMovie = repository.findByIdTmdbAndUser(movieId, getUser());
 
+        if (existsFavoriteMovie != null) {
+            throw new DuplicateFavoriteMovieException();
+        }
         MovieDTO movieDTO = movieService.getMovieById(movieId);
         FavoriteMovie favoriteMovie = new FavoriteMovie(movieDTO, enumCategory, getUser());
 
@@ -62,14 +65,6 @@ public class FavoriteMovieService {
             return FavoriteMovieCategory.valueOf(category.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new InvalidCategoryException(category);
-        }
-    }
-
-    public void existsFavoritMovie(Integer movieId) {
-        FavoriteMovie existsFavoriteMovie = repository.findByIdTmdbAndUser(movieId, getUser());
-
-        if (existsFavoriteMovie != null) {
-            throw new DuplicateFavoriteMovieException();
         }
     }
 
