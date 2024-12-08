@@ -11,4 +11,5 @@ public record MovieDTO(
         @JsonAlias("poster_path") String poster,
         @JsonAlias("release_date") String releaseDate,
         @JsonAlias("id") Integer idTmdb
-) {}
+) {
+}

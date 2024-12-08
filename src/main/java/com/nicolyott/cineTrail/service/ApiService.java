@@ -1,5 +1,7 @@
 package com.nicolyott.cineTrail.service;
 
+import org.springframework.stereotype.Service;
+
 import javax.net.ssl.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,9 +12,13 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
+@Service
 public class ApiService {
 
-    //muita repetição de codigo corrigir
+    static {
+        disableSSLCertificateChecking();
+    }
+
     private static void disableSSLCertificateChecking() {
         try {
             TrustManager[] trustAllCerts = new TrustManager[]{
@@ -33,42 +39,39 @@ public class ApiService {
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
             HostnameVerifier allHostsValid = (hostname, session) -> true;
             HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-
-        } catch (KeyManagementException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+        } catch (KeyManagementException | NoSuchAlgorithmException e) {
+            throw new RuntimeException("Erro ao desabilitar verificação de certificado SSL", e);
         }
     }
 
-        public String dataFetcher(String urlAddress) {
-        disableSSLCertificateChecking();
-        StringBuilder builder = new StringBuilder();
+    private HttpURLConnection createConnection(String urlAddress, String method) throws IOException{
+        URL url = new URL(urlAddress);
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setRequestMethod(method);
+        connection.setConnectTimeout(5000);
+        connection.setReadTimeout(5000);
+        return connection;
+    }
 
+    public String fetchData(String urlAddress) {
         try {
-            URL url = new URL(urlAddress);
-            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(5000);
-
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                String string;
-                while ((string = br.readLine()) != null) {
-                    builder.append(string);
+            HttpURLConnection connection = createConnection(urlAddress, "GET");
+            StringBuilder builder = new StringBuilder();
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()))){
+                String line;
+                while ((line = br.readLine()) != null){
+                    builder.append(line);
                 }
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            return builder.toString();
+        } catch (IOException e){
+            throw new RuntimeException("Erro ao buscar dados da URL: " + urlAddress, e);
         }
-        return builder.toString();
     }
 
-    public int verificarRequisição(String url, String metodo){
-        disableSSLCertificateChecking();
+    public int checkRequest(String urlAddress, String method) {
         try {
-            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.setRequestMethod(metodo);
+            HttpURLConnection connection = createConnection(urlAddress, method);
             connection.connect();
             return connection.getResponseCode();
         } catch (IOException e) {

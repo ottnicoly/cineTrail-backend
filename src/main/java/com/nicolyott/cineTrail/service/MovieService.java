@@ -28,16 +28,17 @@ public class MovieService {
 
     public List<MovieDTO> getMovieByName(String movie) {
         String json = apiService
-                .dataFetcher(movieConfig.getTMDB_BASE_URL() + "search/movie" + movieConfig.getTMDB_API_KEY() + "&query=" + movie.replaceAll(" ", "+"));
+                .fetchData(movieConfig.getTMDB_BASE_URL() + "search/movie" + movieConfig.getTMDB_API_KEY() + "&query=" + movie.replaceAll(" ", "+"));
         List<MovieDTO> movieDTOList = getMovieList(json);
-        emptyMovies(movieDTOList);
+        if (movieDTOList.isEmpty()) {
+            throw new MovieNotFoundException();
+        }
         return movieDTOList;
     }
 
     public List<MovieDTO> getTrendingMovies() {
-        String json = apiService.dataFetcher(movieConfig.getTMDB_BASE_URL() + "movie/popular" + movieConfig.getTMDB_API_KEY());
+        String json = apiService.fetchData(movieConfig.getTMDB_BASE_URL() + "movie/popular" + movieConfig.getTMDB_API_KEY());
         List<MovieDTO> movieDTOList = getMovieList(json);
-        emptyMovies(movieDTOList);
         return movieDTOList;
     }
 
@@ -46,7 +47,7 @@ public class MovieService {
             throw new InvalidMovieIdException();
         }
 
-        String json = apiService.dataFetcher(movieConfig.getTMDB_BASE_URL() + "movie/" + idTmdb + movieConfig.getTMDB_API_KEY());
+        String json = apiService.fetchData(movieConfig.getTMDB_BASE_URL() + "movie/" + idTmdb + movieConfig.getTMDB_API_KEY());
         MovieDTO movieDTO = dataConverter.convertData(json, MovieDTO.class);
         return movieDTO;
     }
@@ -69,15 +70,9 @@ public class MovieService {
         return movieDTOList;
     }
 
-    public void emptyMovies(List<MovieDTO> movieDTOList) {
-        if (movieDTOList.isEmpty()) {
-            throw new MovieNotFoundException();
-        }
-    }
-
     public boolean verificarId(Integer idTmdb) {
         String url = movieConfig.getTMDB_BASE_URL() + "movie/" + idTmdb + movieConfig.getTMDB_API_KEY();
-        int statucCode = apiService.verificarRequisição(url, "GET");
+        int statucCode = apiService.checkRequest(url, "GET");
         return statucCode == 200;
     }
 }
