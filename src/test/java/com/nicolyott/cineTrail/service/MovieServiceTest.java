@@ -5,6 +5,9 @@ import com.nicolyott.cineTrail.config.MovieConfig;
 import com.nicolyott.cineTrail.dto.MovieDTO;
 import com.nicolyott.cineTrail.exception.movie.InvalidMovieIdException;
 import com.nicolyott.cineTrail.exception.movie.MovieNotFoundException;
+import com.nicolyott.cineTrail.service.api.ApiService;
+import com.nicolyott.cineTrail.service.api.DataConverter;
+import com.nicolyott.cineTrail.service.movie.MovieService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,6 +26,7 @@ import java.util.Map;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 class MovieServiceTest {
 
     @Mock

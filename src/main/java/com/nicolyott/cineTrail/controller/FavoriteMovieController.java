@@ -1,7 +1,7 @@
 package com.nicolyott.cineTrail.controller;
 
 import com.nicolyott.cineTrail.entity.favoriteMovie.FavoriteMovie;
-import com.nicolyott.cineTrail.service.FavoriteMovieService;
+import com.nicolyott.cineTrail.service.movie.FavoriteMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

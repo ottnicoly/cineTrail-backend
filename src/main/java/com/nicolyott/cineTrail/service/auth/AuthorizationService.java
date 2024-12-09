@@ -1,4 +1,4 @@
-package com.nicolyott.cineTrail.service;
+package com.nicolyott.cineTrail.service.auth;
 
 import com.nicolyott.cineTrail.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

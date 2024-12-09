@@ -6,12 +6,14 @@ import com.nicolyott.cineTrail.entity.user.UserRole;
 import com.nicolyott.cineTrail.exception.user.UserAlreadyExistsException;
 import com.nicolyott.cineTrail.infra.security.TokenService;
 import com.nicolyott.cineTrail.repository.UserRepository;
+import com.nicolyott.cineTrail.service.auth.AuthenticationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 class AuthenticationServiceTest {
 
     @InjectMocks
@@ -70,7 +73,6 @@ class AuthenticationServiceTest {
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenThrow(BadCredentialsException.class);
 
-        // Execute & Assert
         assertThrows(BadCredentialsException.class, () -> {
             authenticationService.login(authData);
         });
@@ -88,10 +90,8 @@ class AuthenticationServiceTest {
 
         when(userRepository.findByLogin(login)).thenReturn(null);
 
-        // Execute
         authenticationService.register(login, role, password);
 
-        // Verify
         verify(userRepository, times(1)).save(any(User.class));
     }
 
@@ -107,7 +107,6 @@ class AuthenticationServiceTest {
 
         when(userRepository.findByLogin(login)).thenReturn(existingUser);
 
-        // Execute & Assert
         assertThrows(UserAlreadyExistsException.class, () -> {
             authenticationService.register(login, role, password);
         });

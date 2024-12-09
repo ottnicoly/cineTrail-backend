@@ -1,4 +1,4 @@
-package com.nicolyott.cineTrail.service;
+package com.nicolyott.cineTrail.service.api;
 
 import org.springframework.stereotype.Service;
 

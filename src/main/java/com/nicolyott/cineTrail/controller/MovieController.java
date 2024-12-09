@@ -1,8 +1,7 @@
 package com.nicolyott.cineTrail.controller;
 
 import com.nicolyott.cineTrail.dto.MovieDTO;
-import com.nicolyott.cineTrail.service.MovieService;
-import org.apache.coyote.Response;
+import com.nicolyott.cineTrail.service.movie.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

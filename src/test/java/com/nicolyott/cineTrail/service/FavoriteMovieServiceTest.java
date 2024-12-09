@@ -9,14 +9,14 @@ import com.nicolyott.cineTrail.exception.favoriteMovie.FavoriteMovieNotFoundExce
 import com.nicolyott.cineTrail.exception.favoriteMovie.InvalidCategoryException;
 import com.nicolyott.cineTrail.repository.FavoriteMovieRepository;
 import com.nicolyott.cineTrail.repository.UserRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import com.nicolyott.cineTrail.service.movie.FavoriteMovieService;
+import com.nicolyott.cineTrail.service.movie.MovieService;
+import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +27,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 class FavoriteMovieServiceTest {
 
     @Mock
@@ -309,7 +310,7 @@ class FavoriteMovieServiceTest {
     }
 
     @Test
-    @DisplayName("Should return null when userRepository doesn't find the user")
+    @DisplayName("  ")
     void getUserCase3() {
         SecurityContext securityContextMock = mock(SecurityContext.class);
         when(securityContextMock.getAuthentication()).thenReturn(null);

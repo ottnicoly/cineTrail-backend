@@ -1,4 +1,4 @@
-package com.nicolyott.cineTrail.service;
+package com.nicolyott.cineTrail.service.auth;
 
 import com.nicolyott.cineTrail.dto.AuthenticationDTO;
 import com.nicolyott.cineTrail.entity.user.User;

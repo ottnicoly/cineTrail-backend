@@ -1,4 +1,4 @@
-package com.nicolyott.cineTrail.service;
+package com.nicolyott.cineTrail.service.movie;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -7,6 +7,8 @@ import com.nicolyott.cineTrail.config.MovieConfig;
 import com.nicolyott.cineTrail.dto.MovieDTO;
 import com.nicolyott.cineTrail.exception.movie.InvalidMovieIdException;
 import com.nicolyott.cineTrail.exception.movie.MovieNotFoundException;
+import com.nicolyott.cineTrail.service.api.ApiService;
+import com.nicolyott.cineTrail.service.api.DataConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

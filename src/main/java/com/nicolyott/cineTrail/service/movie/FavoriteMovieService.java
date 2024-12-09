@@ -1,4 +1,4 @@
-package com.nicolyott.cineTrail.service;
+package com.nicolyott.cineTrail.service.movie;
 
 import com.nicolyott.cineTrail.dto.MovieDTO;
 import com.nicolyott.cineTrail.entity.favoriteMovie.FavoriteMovie;
